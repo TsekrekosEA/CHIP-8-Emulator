@@ -1,0 +1,3 @@
+/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/out/build/Configure preset using toolchain file/CMakeFiles/CHIP-8_Emulator.dir
+/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/out/build/Configure preset using toolchain file/CMakeFiles/edit_cache.dir
+/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/out/build/Configure preset using toolchain file/CMakeFiles/rebuild_cache.dir

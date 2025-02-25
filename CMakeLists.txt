@@ -12,7 +12,8 @@ set(SOURCE_FILES
     src/glad.c
     src/display.cpp
     src/memory.cpp
-)
+    src/utils.cpp
+    )
 
 add_executable(CHIP-8_Emulator ${SOURCE_FILES})
 

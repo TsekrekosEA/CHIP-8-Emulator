@@ -77,6 +77,13 @@ build CMakeFiles/CHIP-8_Emulator.dir/src/memory.cpp.o: CXX_COMPILER__CHIP-8_Emul
   OBJECT_DIR = CMakeFiles/CHIP-8_Emulator.dir
   OBJECT_FILE_DIR = CMakeFiles/CHIP-8_Emulator.dir/src
 
+build CMakeFiles/CHIP-8_Emulator.dir/src/utils.cpp.o: CXX_COMPILER__CHIP-8_Emulator_Debug /home/tsekrekosea/Documents/Repositories/CHIP-8$ Emulator/src/utils.cpp || cmake_object_order_depends_target_CHIP-8_Emulator
+  DEP_FILE = CMakeFiles/CHIP-8_Emulator.dir/src/utils.cpp.o.d
+  FLAGS = -g
+  INCLUDES = -I"/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/include"
+  OBJECT_DIR = CMakeFiles/CHIP-8_Emulator.dir
+  OBJECT_FILE_DIR = CMakeFiles/CHIP-8_Emulator.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target CHIP-8_Emulator
@@ -85,7 +92,7 @@ build CMakeFiles/CHIP-8_Emulator.dir/src/memory.cpp.o: CXX_COMPILER__CHIP-8_Emul
 #############################################
 # Link the executable CHIP-8_Emulator
 
-build CHIP-8_Emulator: CXX_EXECUTABLE_LINKER__CHIP-8_Emulator_Debug CMakeFiles/CHIP-8_Emulator.dir/src/cpu.cpp.o CMakeFiles/CHIP-8_Emulator.dir/src/glad.c.o CMakeFiles/CHIP-8_Emulator.dir/src/display.cpp.o CMakeFiles/CHIP-8_Emulator.dir/src/memory.cpp.o | /usr/lib/x86_64-linux-gnu/libglfw.so.3.3 /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so
+build CHIP-8_Emulator: CXX_EXECUTABLE_LINKER__CHIP-8_Emulator_Debug CMakeFiles/CHIP-8_Emulator.dir/src/cpu.cpp.o CMakeFiles/CHIP-8_Emulator.dir/src/glad.c.o CMakeFiles/CHIP-8_Emulator.dir/src/display.cpp.o CMakeFiles/CHIP-8_Emulator.dir/src/memory.cpp.o CMakeFiles/CHIP-8_Emulator.dir/src/utils.cpp.o | /usr/lib/x86_64-linux-gnu/libglfw.so.3.3 /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libglfw.so.3.3  -lGL  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so
   OBJECT_DIR = CMakeFiles/CHIP-8_Emulator.dir

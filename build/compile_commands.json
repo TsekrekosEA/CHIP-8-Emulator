@@ -18,5 +18,10 @@
   "directory": "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/build",
   "command": "/usr/bin/c++ -I\"/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/include\" -g -o CMakeFiles/CHIP-8_Emulator.dir/src/memory.cpp.o -c \"/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/src/memory.cpp\"",
   "file": "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/src/memory.cpp"
+},
+{
+  "directory": "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/build",
+  "command": "/usr/bin/c++ -I\"/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/include\" -g -o CMakeFiles/CHIP-8_Emulator.dir/src/utils.cpp.o -c \"/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/src/utils.cpp\"",
+  "file": "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/src/utils.cpp"
 }
 ]

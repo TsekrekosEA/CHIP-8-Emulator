@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "CHIP-8_Emulator::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-CHIP-8_Emulator-Debug-afb89fdac49fc647fc27.json",
+					"jsonFile" : "target-CHIP-8_Emulator-Debug-f94f59763d5650222fb2.json",
 					"name" : "CHIP-8_Emulator",
 					"projectIndex" : 0
 				}
@@ -49,7 +49,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/build",
+		"build" : "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/out/build/Configure preset using toolchain file",
 		"source" : "/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator"
 	},
 	"version" : 
