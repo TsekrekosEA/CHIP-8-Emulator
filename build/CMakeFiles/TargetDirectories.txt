@@ -1,0 +1,3 @@
+/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/build/CMakeFiles/CHIP-8_Emulator.dir
+/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/build/CMakeFiles/edit_cache.dir
+/home/tsekrekosea/Documents/Repositories/CHIP-8 Emulator/build/CMakeFiles/rebuild_cache.dir
