@@ -11,7 +11,6 @@ set(SOURCE_FILES
     src/cpu.cpp
     src/glad.c
     src/display.cpp
-    src/memory.cpp
     src/utils.cpp
     )
 

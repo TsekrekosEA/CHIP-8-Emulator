@@ -12,8 +12,8 @@ void processInput(GLFWwindow *window);
 float deltaTime,lastFrame;
 
 // settings
-const unsigned int SCR_WIDTH = 320;
-const unsigned int SCR_HEIGHT = 640;
+const unsigned int SCR_WIDTH = 640;
+const unsigned int SCR_HEIGHT = 320;
 
 int main()
 {
@@ -48,8 +48,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST); // Enable depth testing
 
-    CPU MainCpu;
-    MainCpu.CPUtest();
+    CPU cpu;
+    cpu.CPUtest();
 
    // render loop
     while (!glfwWindowShouldClose(window))
@@ -65,6 +65,8 @@ int main()
         // render
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        cpu.Cycle(); // call the opcode execution cycle
       
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -72,7 +74,8 @@ int main()
 
     glfwTerminate();
     return 0;
-}  
+}
+
 
 
 // ... (input processing and callback functions remain the same)

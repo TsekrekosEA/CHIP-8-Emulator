@@ -1,0 +1,16 @@
+# ninja log v5
+2	75	1740512687649897438	CMakeFiles/CHIP-8_Emulator.dir/src/utils.cpp.o	683d9ee403daf562
+2	137	1740512687713896125	CMakeFiles/CHIP-8_Emulator.dir/src/memory.cpp.o	81415be1fea0a88e
+657	760	1740519710409296826	CHIP-8_Emulator	116e5ff538383c5d
+1	304	1740512687877892759	CMakeFiles/CHIP-8_Emulator.dir/src/glad.c.o	d68130ac9a2bec3d
+6	634	1740519710281299461	CMakeFiles/CHIP-8_Emulator.dir/src/display.cpp.o	d1e73155a1b79837
+6	657	1740519710305298967	CMakeFiles/CHIP-8_Emulator.dir/src/cpu.cpp.o	96dbe31a329f5410
+7	168	1740521232144439974	CMakeFiles/CHIP-8_Emulator.dir/src/utils.cpp.o	683d9ee403daf562
+1	573	1740521232552431324	CMakeFiles/CHIP-8_Emulator.dir/src/cpu.cpp.o	96dbe31a329f5410
+3	594	1740521232572430899	CMakeFiles/CHIP-8_Emulator.dir/src/display.cpp.o	d1e73155a1b79837
+594	700	1740521232676428695	CHIP-8_Emulator	f4a4904cf41279e3
+9	650	1740523862072328452	CMakeFiles/CHIP-8_Emulator.dir/src/cpu.cpp.o	96dbe31a329f5410
+9	661	1740523862084328211	CMakeFiles/CHIP-8_Emulator.dir/src/display.cpp.o	d1e73155a1b79837
+1	364	1740523981657903354	CMakeFiles/CHIP-8_Emulator.dir/src/cpu.cpp.o	96dbe31a329f5410
+2	429	1740523981721902055	CMakeFiles/CHIP-8_Emulator.dir/src/display.cpp.o	d1e73155a1b79837
+429	513	1740523981805900354	CHIP-8_Emulator	f4a4904cf41279e3
