@@ -250,13 +250,32 @@ void CPU::executeOpcode(uint16_t opcode) {
             break;
         case 0x000A: // FX0A
             // A key press is awaited, and then stored in VX
-            if (pressedKey != 0xFF) { // If a key is pressed
-                V[X] = pressedKey;
+            static bool waitingForKeyRelease = false;
+            static uint8_t lastKey = 0xFF;
+            
+            if (waitingForKeyRelease) {
+                // We've captured a key press and are waiting for release
+                if (pressedKey == 0xFF) {
+                    // Key has been released, continue execution
+                    waitingForKeyRelease = false;
+                } else {
+                    // Key still pressed, wait
+                    PC -= 2;
+                }
             } else {
-                // Stay on this instruction until key is pressed (decrement PC by 2)
-                PC -= 2;
+                // Waiting for initial key press
+                if (pressedKey != 0xFF) {
+                    // Key pressed, save it
+                    V[X] = pressedKey;
+                    lastKey = pressedKey;
+                    waitingForKeyRelease = true;
+                    PC -= 2;  // Stay on this instruction
+                } else {
+                    // No key pressed, keep waiting
+                    PC -= 2;
+                }
             }
-            break;
+            break; 
         case 0x0015: // FX15
             // Sets the delay timer to VX
             DELAY = V[X];
@@ -303,9 +322,7 @@ void CPU::Cycle(){
     opcode = RAM[PC] << 8 | RAM[PC + 1];
     executeOpcode(opcode);
     if(DELAY > 0){ DELAY--; }
-    if (TIMER == 1) {
-        // implement sound
-    }
+    if (TIMER == 1) { system("mpg123 meow.mp3");}
     if (TIMER > 0){ TIMER--; }
     PC+=2;
 }

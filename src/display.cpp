@@ -107,7 +107,7 @@ int main(int argc, char **argv)
         glfwPollEvents();        
 
         // Sleep to lock the refresh rate to 60Hz
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
     glfwTerminate();
@@ -125,8 +125,8 @@ void processInput(GLFWwindow *window, CPU &cpu)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    // Initialize keyPress to 0 (no key)
-    cpu.setKeyPress(0); 
+    // Initialize keyPress to 0xFF (no key)
+    cpu.setKeyPress(0xFF); 
 
     // Map GLFW keys directly to CHIP-8 keys
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) cpu.setKeyPress(0x1);
