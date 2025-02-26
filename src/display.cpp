@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "cpu.h"
+#include <thread>
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -103,6 +104,9 @@ int main(int argc, char **argv)
       
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        // Sleep to lock the refresh rate to 60Hz
+        std::this_thread::sleep_for(std::chrono::milliseconds(16));
     }
 
     glfwTerminate();
