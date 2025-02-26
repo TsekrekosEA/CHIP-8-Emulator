@@ -250,10 +250,7 @@ void CPU::executeOpcode(uint16_t opcode) {
             V[X] = DELAY;
             break;
         case 0x000A: // FX0A
-            // A key press is awaited, and then stored in VX
-            static bool waitingForKeyRelease = false;
-            static uint8_t lastKey = 0xFF;
-            
+            // A key press is awaited, and then stored in VX            
             if (waitingForKeyRelease) {
                 // We've captured a key press and are waiting for release
                 if (pressedKey == 0xFF) {
@@ -320,12 +317,13 @@ void CPU::executeOpcode(uint16_t opcode) {
 }
 
 void CPU::Cycle(){
-    opcode = RAM[PC] << 8 | RAM[PC + 1];
-    executeOpcode(opcode);
-    if(DELAY > 0){ DELAY--; }
-    if (TIMER == 1) { system("mpg123 meow.mp3 &");}
-    if (TIMER > 0){ TIMER--; }
-    PC+=2;
+    opcode = RAM[PC] << 8 | RAM[PC + 1]; // The Current Opcode is the OR of the 2 consecutive bytes in memory
+    executeOpcode(opcode); // jump to opcode execution switch case to decode and execute opcode
+    if(DELAY > 0){ DELAY--; } // decrement delay timer
+    if (TIMER == 1) { system("mpg123 meow.mp3 > /dev/null 2>&1 &");} // play the defined "beep" sound, running concurrently with program
+    // dev/null output redirection to prevent console from being spammed whenever the sound is decoded
+    if (TIMER > 0){ TIMER--; } // decrement timer
+    PC+=2; // No matter the opcode, incremnt PC by 2, logic for halting and looping implemented inside opcodes
 }
 
 void CPU::setKeyPress(uint8_t key) {

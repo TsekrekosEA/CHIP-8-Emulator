@@ -35,11 +35,15 @@ uint16_t opcode,X,Y,N,NN,NNN;
 // a 64x32 boolean array of the screen, True means the pixel is on, False means the pixel is off
 bool display [64][32];
 
+// stores the current key pressed
 uint8_t pressedKey;
+// variables needed for key press/key release logic to work
+bool waitingForKeyRelease = false;
+uint8_t lastKey = 0xFF;
 
 
 public:
-CPU(){
+CPU(){ // CPU Constructor, Initializes all fields to their default values
     std::cout<<"CPU Created!"<<"\n";
 
     // traditionally 0x000 to 0x1FF was where the interpret was located, programs start at 0x200
