@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <iostream>
-
+#include <stdio.h>
+#include <cstring>
 
 class CPU{
 
@@ -41,17 +41,27 @@ uint8_t pressedKey;
 public:
 CPU(){
     std::cout<<"CPU Created!"<<"\n";
-    executeOpcode(0x00E0); // clear screen
+
     // traditionally 0x000 to 0x1FF was where the interpret was located, programs start at 0x200
     PC = 0x200;
-    SP = I = opcode = DELAY = TIMER = 0;
+    SP = 0;
+    I = 0;
+    DELAY = 0;
+    TIMER = 0;
+    opcode = 0;
+    pressedKey = 0xFF;
+
+
+    // Clear memory, registers, and display
+    memset(RAM, 0, sizeof(RAM));
+    memset(V, 0, sizeof(V));
+    memset(display, 0, sizeof(display));
 
 }
 
 ~CPU(){};
 
 bool getPixel(int x, int y) const { return display[x][y]; }
-void CPUtest();
 void executeOpcode(uint16_t opcode);
 void Cycle();
 void loadFile(char * filePath);

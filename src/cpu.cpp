@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <iostream>
 #include "cpu.h"
+#include <random>
 
 // The font used to display numbers on screen, each set of 5 bytes is a single Digit/Number, called by a special drawer function
 uint8_t font [] = {
@@ -21,10 +22,6 @@ uint8_t font [] = {
 0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
 0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
-
-void CPU::CPUtest(){
-    std::cout<<"CPU Test Function Run!"<<"\n";
-}
 
 void CPU::loadFile(char * filePath){
 
@@ -78,19 +75,19 @@ void CPU::executeOpcode(uint16_t opcode) {
         switch (opcode) {
         case 0x00E0: // 00E0
             // Clears the screen
-            for(int i=0;i<64;i++){
-                for(int j=0;j<32;j++){
-                    display[i][j]=false;
-                }
-            }
+            memset(display, 0, sizeof(display));
             break;
         case 0x00EE: // 00EE
             // Returns from a subroutine
-            SP--;
-            PC=stack[SP];
+            if (SP > 0) {
+                SP--;
+                PC = stack[SP];
+            } else {
+                std::cerr << "Stack underflow at PC=" << std::hex << PC << std::endl;
+            }
             break;
         default:
-            // Calls machine code routine at address NNN
+        // 0NNN should be ignored for most modern emulators
             break;
         }
         break;
@@ -188,8 +185,12 @@ void CPU::executeOpcode(uint16_t opcode) {
         PC-=2;
         break;
     case 0xC000: // CXNN
-        // Sets VX to the result of a bitwise and operation on a random number and NN
-        V[X] = (rand() % 256) & NN;
+    {    // Sets VX to the result of a bitwise and operation on a random number and NN
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<> dis(0, 255);
+        V[X] = dis(gen) & NN;
+    }
         break;
     case 0xD000: // DXYN
         // Draws a sprite at coordinate (VX, VY) with width of 8 pixels and height of N pixels
@@ -322,7 +323,7 @@ void CPU::Cycle(){
     opcode = RAM[PC] << 8 | RAM[PC + 1];
     executeOpcode(opcode);
     if(DELAY > 0){ DELAY--; }
-    if (TIMER == 1) { system("mpg123 meow.mp3");}
+    if (TIMER == 1) { system("mpg123 meow.mp3 &");}
     if (TIMER > 0){ TIMER--; }
     PC+=2;
 }

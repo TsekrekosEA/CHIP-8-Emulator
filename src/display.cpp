@@ -2,14 +2,22 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "cpu.h"
-#include <thread>
 
+#define CHIP8_INSTRUCTIONS_PER_FRAME 8
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window, CPU& cpu);
 
-float deltaTime,lastFrame;
 char keyPress;
+
+// Game Boy-inspired color scheme
+const float BG_COLOR_R = 0.06f;    // #0f380f - dark green background
+const float BG_COLOR_G = 0.22f;
+const float BG_COLOR_B = 0.06f;
+
+const float PIXEL_COLOR_R = 0.61f; // #9bbc0f - light green pixels
+const float PIXEL_COLOR_G = 0.74f;
+const float PIXEL_COLOR_B = 0.06f;
 
 // settings
 const unsigned int SCR_WIDTH = 640;
@@ -36,7 +44,7 @@ void renderChip8Display(const CPU& cpu) {
                 float x2 = (x + 1) * pixelWidth;
                 float y2 = (y + 1) * pixelHeight;
                 
-                glColor3f(1.0f, 1.0f, 1.0f); // White color
+                glColor3f(PIXEL_COLOR_R, PIXEL_COLOR_G, PIXEL_COLOR_B); // White color
                 glVertex2f(x1, y1);
                 glVertex2f(x2, y1);
                 glVertex2f(x2, y2);
@@ -55,8 +63,12 @@ int main(int argc, char **argv)
         std::cout << "Usage: ./CHIP-8_Emulator ROMfile" << std::endl;
         return 1;
     }    
-    // glfw: initialize and configure
-    glfwInit();
+    // Initialize GLFW
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
+    }
+
     // Use compatibility profile instead of core
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -79,35 +91,32 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    glDisable(GL_DEPTH_TEST); // Enable depth testing
+    glDisable(GL_DEPTH_TEST); // Disable depth testing (working in 2D)
 
     CPU cpu;
-    cpu.CPUtest();
     cpu.loadFile(argv[1]);
+    std::cout << "ROM loaded, starting emulation..." << std::endl;
 
    // render loop
     while (!glfwWindowShouldClose(window))
     {
-        // per-frame time logic
-        float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-
         // input
         processInput(window, cpu);
 
         // render
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(BG_COLOR_R, BG_COLOR_G, BG_COLOR_B, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        cpu.Cycle(); // call the opcode execution cycle
+        for (int i = 0; i < CHIP8_INSTRUCTIONS_PER_FRAME; i++) {
+            cpu.Cycle(); // call opcode execution cycle, multiple times to control framerate
+        }
+        
         renderChip8Display(cpu); // Render the CHIP-8 display
 
+        // Swap buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();        
 
-        // Sleep to lock the refresh rate to 60Hz
-        std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
     glfwTerminate();
@@ -116,10 +125,8 @@ int main(int argc, char **argv)
 
 
 
-// ... (input processing and callback functions remain the same)
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
+// Process keyboard input
 void processInput(GLFWwindow *window, CPU &cpu)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -128,33 +135,34 @@ void processInput(GLFWwindow *window, CPU &cpu)
     // Initialize keyPress to 0xFF (no key)
     cpu.setKeyPress(0xFF); 
 
-    // Map GLFW keys directly to CHIP-8 keys
+    // CHIP-8 keypad layout:
+    // 1 2 3 C    maps to    1 2 3 4
+    // 4 5 6 D                Q W E R
+    // 7 8 9 E                A S D F
+    // A 0 B F                Z X C V
+
+    // Row 1
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) cpu.setKeyPress(0x1);
     if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) cpu.setKeyPress(0x2);
     if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) cpu.setKeyPress(0x3);
     if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) cpu.setKeyPress(0xC);
-    
+    // Row 2  
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) cpu.setKeyPress(0x4);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) cpu.setKeyPress(0x5);
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) cpu.setKeyPress(0x6);
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) cpu.setKeyPress(0xD);
-    
+    // Row 3    
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) cpu.setKeyPress(0x7);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) cpu.setKeyPress(0x8);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) cpu.setKeyPress(0x9);
     if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) cpu.setKeyPress(0xE);
-    
+    // Row 4   
     if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) cpu.setKeyPress(0xA);
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) cpu.setKeyPress(0x0);
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) cpu.setKeyPress(0xB);
     if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) cpu.setKeyPress(0xF);
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
+// Handle window resize
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
-}
+{glViewport(0, 0, width, height);}
