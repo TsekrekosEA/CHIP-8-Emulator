@@ -44,7 +44,7 @@ CPU(){
     executeOpcode(0x00E0); // clear screen
     // traditionally 0x000 to 0x1FF was where the interpret was located, programs start at 0x200
     PC = 0x200;
-    SP,I,opcode,DELAY,TIMER = 0;
+    SP = I = opcode = DELAY = TIMER = 0;
 
 }
 
