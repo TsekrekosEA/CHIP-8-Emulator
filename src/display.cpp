@@ -6,9 +6,10 @@
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow *window, CPU& cpu);
 
 float deltaTime,lastFrame;
+char keyPress;
 
 // settings
 const unsigned int SCR_WIDTH = 640;
@@ -93,17 +94,17 @@ int main(int argc, char **argv)
         lastFrame = currentFrame;
 
         // input
-        processInput(window);
+        processInput(window, cpu);
 
         // render
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         cpu.Cycle(); // call the opcode execution cycle
         renderChip8Display(cpu); // Render the CHIP-8 display
-      
+
         glfwSwapBuffers(window);
-        glfwPollEvents();
+        glfwPollEvents();        
 
         // Sleep to lock the refresh rate to 60Hz
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
@@ -119,10 +120,34 @@ int main(int argc, char **argv)
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow *window, CPU &cpu)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    // Initialize keyPress to 0 (no key)
+    cpu.setKeyPress(0); 
+
+    // Map GLFW keys directly to CHIP-8 keys
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) cpu.setKeyPress(0x1);
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) cpu.setKeyPress(0x2);
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) cpu.setKeyPress(0x3);
+    if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) cpu.setKeyPress(0xC);
+    
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) cpu.setKeyPress(0x4);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) cpu.setKeyPress(0x5);
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) cpu.setKeyPress(0x6);
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) cpu.setKeyPress(0xD);
+    
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) cpu.setKeyPress(0x7);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) cpu.setKeyPress(0x8);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) cpu.setKeyPress(0x9);
+    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) cpu.setKeyPress(0xE);
+    
+    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) cpu.setKeyPress(0xA);
+    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) cpu.setKeyPress(0x0);
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) cpu.setKeyPress(0xB);
+    if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) cpu.setKeyPress(0xF);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

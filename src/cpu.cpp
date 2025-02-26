@@ -197,11 +197,11 @@ void CPU::executeOpcode(uint16_t opcode) {
 
         case 0xE09E: // EX9E
             // Skips the next instruction if the key stored in VX is pressed
-            // Implementation of key press check
+            if (V[X] == pressedKey){ PC+=2; }
             break;
         case 0xE0A1: // EXA1
             // Skips the next instruction if the key stored in VX is not pressed
-            // Implementation of key press check
+            if (V[X] != pressedKey){ PC+=2; }
             break;
         case 0xF007: // FX07
             // Sets VX to the value of the delay timer
@@ -209,7 +209,12 @@ void CPU::executeOpcode(uint16_t opcode) {
             break;
         case 0xF00A: // FX0A
             // A key press is awaited, and then stored in VX
-            // Implementation of key press wait
+            if (pressedKey != 0xFF) { // If a key is pressed
+                V[X] = pressedKey;
+            } else {
+                // Stay on this instruction until key is pressed (decrement PC by 2)
+                PC -= 2;
+            }
             break;
         case 0xF015: // FX15
             // Sets the delay timer to VX
@@ -258,3 +263,27 @@ void CPU::Cycle(){
     PC+=2;
 }
 
+void CPU::setKeyPress(uint8_t key) {
+    pressedKey = key;
+}
+
+
+// The font used to display numbers on screen, each set of 5 bytes is a single Digit/Number, called by a special drawer function
+uint8_t font [] = {
+0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+0x20, 0x60, 0x20, 0x20, 0x70, // 1
+0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+};

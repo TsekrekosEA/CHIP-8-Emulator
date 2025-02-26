@@ -6,7 +6,6 @@ class CPU{
 
 private:
 // Setting up 16 general purpose 8-bit registers, mostly used for memory addresses, so only rightmost 12 bits used. // VF is special in that it's a flag, used by some instuctions
-
 uint8_t V[16];
 
 // the index register
@@ -36,6 +35,7 @@ uint16_t opcode,X,Y,N,NN,NNN;
 // a 64x32 boolean array of the screen, True means the pixel is on, False means the pixel is off
 bool display [64][32];
 
+uint8_t pressedKey;
 
 
 public:
@@ -55,5 +55,6 @@ void CPUtest();
 void executeOpcode(uint16_t opcode);
 void Cycle();
 void loadFile(char * filePath);
+void setKeyPress(uint8_t key);
 
 };
