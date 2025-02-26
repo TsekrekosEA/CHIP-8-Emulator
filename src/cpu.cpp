@@ -35,7 +35,7 @@ void CPU::loadFile(char * filePath){
 
     // Get file size
     fseek(rom, 0, SEEK_END); // seek to end of file to find size
-    long fileSize = ftell(rom);
+    size_t fileSize = ftell(rom);
     fseek(rom, 0, SEEK_SET); // return to beginning of file
 
     // Check if ROM fits in memory (4096 - 0x200)
@@ -57,7 +57,7 @@ void CPU::loadFile(char * filePath){
     std::cout << "Loaded " << bytesRead << " bytes into memory" << std::endl;
 
     // Load font into memory starting at 0x50
-    for (int i = 0; i < sizeof(font); ++i) {
+    for (long unsigned int i = 0; i < sizeof(font); ++i) {
         RAM[0x50 + i] = font[i];
     }
 }
