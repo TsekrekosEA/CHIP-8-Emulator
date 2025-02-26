@@ -7,6 +7,41 @@ void CPU::CPUtest(){
     std::cout<<"CPU Test Function Run!"<<"\n";
 }
 
+void CPU::loadFile(char * filePath){
+
+    printf("Loading ROM: %s\n", filePath);
+
+    FILE* rom = fopen(filePath, "rb" );
+    if (rom == NULL) {
+        std::cout << "Failed to Open ROM" << std::endl;
+        return;
+    }
+
+    // Get file size
+    fseek(rom, 0, SEEK_END); // seek to end of file to find size
+    long fileSize = ftell(rom);
+    fseek(rom, 0, SEEK_SET); // return to beginning of file
+
+    // Check if ROM fits in memory (4096 - 0x200)
+    if (fileSize > 0x1000 - 0x200) {
+        std::cout << "ROM too large for memory" << std::endl;
+        fclose(rom);
+        return;
+    }
+
+    // Read ROM data into memory starting at 0x200
+    size_t bytesRead = fread(&RAM[0x200], 1, fileSize, rom);
+    fclose(rom);
+    
+    if (bytesRead != fileSize) {
+        std::cout << "Error reading ROM file" << std::endl;
+        return;
+    }
+    
+    std::cout << "Loaded " << bytesRead << " bytes into memory" << std::endl;
+
+}
+
 
 void CPU::executeOpcode(uint16_t opcode) {
     uint8_t X = (opcode & 0x0F00) >> 8;
@@ -122,8 +157,44 @@ void CPU::executeOpcode(uint16_t opcode) {
             break;
         case 0xD000: // DXYN
             // Draws a sprite at coordinate (VX, VY) with width of 8 pixels and height of N pixels
-            // Implementation of drawing sprite
+            // We use modulo for screen wrapping at edges to happen nicely
+            // x is the x coordinate, y is the y coordinate, h is the height (amount of lines), p is the current pixel.
+            {
+            uint8_t xCoord = V[X] % 64;
+            uint8_t yCoord = V[Y] % 32;
+            V[0xF]=0; // VF = 0
+
+            for (int row = 0; row < N; row++) {
+                if (yCoord >= 32) break;  // stop if we go past screen height
+
+                 // read the row of sprite data from memory
+                uint8_t spriteByte = RAM[I + row];
+
+                // draw each bit of this row
+                for (int bit = 0; bit < 8; bit++) {
+                    if (xCoord >= 64) break;   // stop if we go past screen width
+
+                    // check if the current bit is set
+                    if (spriteByte & (0x80 >> bit)) {
+                        // if screen pixel is on, turn it off and set VF=1
+                        if (display[xCoord][yCoord]) {
+                            display[xCoord][yCoord] = false;
+                            V[0xF] = 1;
+                        } else {
+                            // otherwise, turn it on
+                            display[xCoord][yCoord] = true;
+                        }
+                    }
+                    ++xCoord;
+                }
+
+                // reset x for the next row, then increment y
+                xCoord = V[X] % 64;
+                ++yCoord;
+                }
+            }
             break;
+
         case 0xE09E: // EX9E
             // Skips the next instruction if the key stored in VX is pressed
             // Implementation of key press check

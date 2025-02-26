@@ -10,7 +10,7 @@ private:
 uint8_t V[16];
 
 // the index register
-uint8_t I;
+uint16_t I;
 
 // timer and delay registers for timings
 uint8_t TIMER,DELAY;
@@ -50,8 +50,10 @@ CPU(){
 
 ~CPU(){};
 
+bool getPixel(int x, int y) const { return display[x][y]; }
 void CPUtest();
 void executeOpcode(uint16_t opcode);
 void Cycle();
+void loadFile(char * filePath);
 
 };
